@@ -16,7 +16,7 @@
 
 <span
 	class={cx({
-		'relative inline-block': true,
+		'relative inline-block h-full py-1': true,
 		'text-white': actual && letter === actual,
 		'text-red-700': actual && letter !== actual,
 		'line-through': letter && actual && letter !== actual
@@ -28,10 +28,10 @@
 			in:receive={{ key: wordId + '' + letterId }}
 			out:send={{ key: animationId.letter }}
 			class={cx({
-				'absolute inline-block transition-all duration-200': true,
+				'absolute top-0 inline-block h-full w-0.5 animate-blink bg-blue-500 transition-all duration-200': true,
 				'left-full': showCursorOnRight,
-				' -left-1': !showCursorOnRight
-			})}>|</span
-		>
+				' -left-0.5': !showCursorOnRight
+			})}
+		/>
 	{/if}
 </span>

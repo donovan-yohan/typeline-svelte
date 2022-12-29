@@ -10,6 +10,7 @@
 		letter: '00',
 		word: 0
 	};
+	let typingContainer: HTMLElement;
 
 	function generateTypeData(sourceText: string, typed: string[]) {
 		return sourceText.split(' ').map((expected, i) => {
@@ -80,10 +81,20 @@
 </script>
 
 <div class="flex-col">
-	<div class="rounded-box bg-slate-600 p-8">
+	<div
+		bind:this={typingContainer}
+		class="no-scrollbar rounded-box max-h-80 overflow-y-scroll bg-slate-600 p-8"
+	>
 		<span>
 			{#each typeTestData as { expected, actual }, i (i)}
-				<Word active={i === activeIndex} id={i} {expected} {actual} {animationId} />
+				<Word
+					active={i === activeIndex}
+					id={i}
+					{expected}
+					{actual}
+					{animationId}
+					{typingContainer}
+				/>
 			{/each}
 		</span>
 	</div>
