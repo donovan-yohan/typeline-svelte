@@ -13,8 +13,10 @@
 	export let active: boolean;
 	export let animationId: AnimationId;
 	export let typingContainer: HTMLElement;
+	export let passed: boolean;
 
 	let ref: HTMLElement;
+	let numOfCharsTyped = 0;
 
 	$: if (ref && typingContainer && active && !$isScrolling) {
 		scrollTo({
@@ -28,9 +30,19 @@
 			onDone: () => isScrolling.set(false)
 		});
 	}
+
+	$: if (actual) {
+		numOfCharsTyped++;
+	}
 </script>
 
-<span bind:this={ref} class="relative z-20 my-4 mx-2 inline-flex text-4xl text-slate-400">
+<span
+	bind:this={ref}
+	class={cx({
+		'relative z-20 my-4 mx-2 inline-flex text-4xl': true,
+		'animate-springWiggle': passed && actual !== expected
+	})}
+>
 	{#each expected.split('') as letter, j (id + '' + j)}
 		<Letter
 			wordId={id}
@@ -41,6 +53,9 @@
 				(actual.length === j || (actual.length == expected.length && actual.length === j + 1))}
 			isLast={j === expected.length - 1}
 			{animationId}
+			wordIncorrect={actual !== expected.slice(0, actual.length)}
+			wordPerfect={actual === expected && numOfCharsTyped === expected.length && passed}
+			{passed}
 		/>
 	{/each}
 	{#if actual.length > expected.length}
@@ -55,6 +70,9 @@
 						(actual.length == expected.length && actual.length === j + expected.length + 1))}
 				isLast={j + expected.length === actual.length - 1}
 				{animationId}
+				wordIncorrect={true}
+				wordPerfect={false}
+				{passed}
 			/>
 		{/each}
 	{/if}
@@ -63,8 +81,8 @@
 			in:receive={{ key: id }}
 			out:send={{ key: animationId.word }}
 			class={cx({
-				'absolute left-0 top-0 -z-10 h-full w-full rounded-md bg-blue-500 opacity-25 transition-colors duration-300': true,
-				'bg-red-600': actual !== expected.slice(0, actual.length)
+				'absolute left-0 top-0 -z-10 h-full w-full rounded-md bg-primary opacity-25 transition-colors duration-300 ease-out': true,
+				'bg-error': actual !== expected.slice(0, actual.length)
 			})}
 		/>
 	{/if}

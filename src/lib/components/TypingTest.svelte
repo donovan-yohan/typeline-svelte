@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { AnimationId, TypingData } from '$lib/definitions/TypingTest.definition';
+	import { wordGenerator } from '$lib/stores/TypingTest.store';
 	import { getTypingInputType, TypingInputType } from '$lib/utils/typingTest.util';
+	import { MIN_WORDS_AHEAD } from '$lib/utils/wordGenerator/wordGenerator.config';
 	import Word from './Word.svelte';
 
-	export let sourceText: string;
+	export let sourceText: string[];
 
 	let typed: string[] = [''];
 	let animationId: AnimationId = {
@@ -12,8 +14,8 @@
 	};
 	let typingContainer: HTMLElement;
 
-	function generateTypeData(sourceText: string, typed: string[]) {
-		return sourceText.split(' ').map((expected, i) => {
+	function generateTypeData(sourceText: string[], typed: string[]) {
+		return sourceText.map((expected, i) => {
 			return {
 				expected,
 				actual: typed[i] || ''
@@ -78,14 +80,21 @@
 
 	$: typeTestData = generateTypeData(sourceText, typed);
 	$: activeIndex = typed.length - 1;
+	$: if (activeIndex > sourceText.length - MIN_WORDS_AHEAD) {
+		wordGenerator.generate();
+	}
 </script>
 
-<div class="flex-col">
-	<div bind:this={typingContainer} class="no-scrollbar max-h-60 overflow-y-scroll bg-slate-600">
+<div class="relative flex-col">
+	<div
+		bind:this={typingContainer}
+		class="no-scrollbar relative -z-10 max-h-60 select-none overflow-y-hidden bg-transparent  "
+	>
 		<span>
 			{#each typeTestData as { expected, actual }, i (i)}
 				<Word
 					active={i === activeIndex}
+					passed={i < activeIndex}
 					id={i}
 					{expected}
 					{actual}
@@ -99,7 +108,7 @@
 	<input
 		type="text"
 		placeholder="Type here"
-		class="input-primary input mt-4 w-full"
+		class="absolute left-0 top-0 z-10 mt-4 h-full w-full opacity-0"
 		on:keydown|preventDefault|trusted={handleKeyDown}
 	/>
 </div>

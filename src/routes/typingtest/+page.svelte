@@ -1,9 +1,10 @@
 <script>
-	import TypingTest from '$lib/components/TypingTest.svelte';
+	import TypingWrapper from '$lib/components/TypingWrapper.svelte';
+	import { wordGenerator } from '$lib/stores/TypingTest.store';
 
-	let source = `non diam phasellus vestibulum lorem sed risus ultricies tristique nulla aliquet enim tortor at auctor urna nunc id cursus metus aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque purus semper eget duis at tellus at urna condimentum mattis pellentesque id nibh tortor id aliquet lectus proin nibh nisl condimentum id venenatis a condimentum vitae sapien pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas sed tempus urna et pharetra pharetra massa massa ultricies mi quis hendrerit dolor magna eget est lorem ipsum dolor sit amet consectetur adipiscing elit pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas integer eget aliquet nibh praesent tristique magna sit amet purus gravida quis`;
+	wordGenerator.initialize('test');
 </script>
 
-<div class="my-12 flex h-full w-auto items-center justify-center">
-	<TypingTest sourceText={source} />
+<div class="my-auto flex h-full w-auto">
+	<TypingWrapper />
 </div>
