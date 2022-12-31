@@ -81,10 +81,7 @@
 </script>
 
 <div class="flex-col">
-	<div
-		bind:this={typingContainer}
-		class="no-scrollbar rounded-box max-h-80 overflow-y-scroll bg-slate-600 p-8"
-	>
+	<div bind:this={typingContainer} class="no-scrollbar max-h-60 overflow-y-scroll bg-slate-600">
 		<span>
 			{#each typeTestData as { expected, actual }, i (i)}
 				<Word
@@ -103,6 +100,6 @@
 		type="text"
 		placeholder="Type here"
 		class="input-primary input mt-4 w-full"
-		on:keydown|preventDefault={handleKeyDown}
+		on:keydown|preventDefault|trusted={handleKeyDown}
 	/>
 </div>

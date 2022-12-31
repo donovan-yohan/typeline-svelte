@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { isScrolling } from '$lib/stores/TypingTest.store';
-	import { scrollTo } from 'svelte-scrollto';
+	import { scrollTo } from '$lib/utils/ScrollTo/ScrollTo';
 	import cx from 'classnames';
 	import type { AnimationId } from '$lib/definitions/TypingTest.definition';
 	import { send, receive } from '$lib/styles/cursorTransition';
 	import Letter from './Letter.svelte';
-	import { quartInOut } from 'svelte/easing';
+	import { quartOut } from 'svelte/easing';
 
 	export let id: number;
 	export let expected: string;
@@ -20,17 +20,17 @@
 		scrollTo({
 			element: ref,
 			container: typingContainer,
-			easing: quartInOut,
-			offset: -150,
-			duration: 1500
-
-			// onStart: () => isScrolling.set(true),
-			// onDone: () => isScrolling.set(false)
+			easing: quartOut,
+			offset: -ref.clientHeight * 2,
+			delay: 0,
+			duration: 700,
+			onStart: () => isScrolling.set(true),
+			onDone: () => isScrolling.set(false)
 		});
 	}
 </script>
 
-<span bind:this={ref} class="relative z-20 my-2 mx-2 inline-flex text-4xl text-slate-400">
+<span bind:this={ref} class="relative z-20 my-4 mx-2 inline-flex text-4xl text-slate-400">
 	{#each expected.split('') as letter, j (id + '' + j)}
 		<Letter
 			wordId={id}
