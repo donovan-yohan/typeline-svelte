@@ -68,7 +68,7 @@
 				active={active &&
 					(actual.length === j + expected.length ||
 						(actual.length == expected.length && actual.length === j + expected.length + 1))}
-				isLast={j + expected.length === actual.length - 1}
+				isLast={true}
 				{animationId}
 				wordIncorrect={true}
 				wordPerfect={false}

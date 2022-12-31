@@ -14,16 +14,23 @@
 	export let wordPerfect: boolean;
 	export let passed: boolean;
 
+	let actualMemo = actual;
+
 	$: showCursorOnRight = (active && isLast && actual) || !letter;
+	$: if (actual) actualMemo = actual;
+	$: if (active && actual) console.log(letterId, animationId);
 </script>
 
 <span class={'relative inline-block h-full py-1'}>
 	<span
+		style="--letter: '{actualMemo}'"
 		class={cx({
-			'inline-block transition-all duration-300': true,
+			'letter inline-block transition-all duration-300': true,
+			'after:absolute after:left-0 after:top-1/2 after:w-full after:text-center after:text-base after:text-base-content after:opacity-0 after:transition-all after:ease-in ': true,
 			'text-base-content opacity-60': !actual && !passed,
 			'text-base-content': actual && letter === actual && !wordPerfect,
 			'text-error': actual && letter !== actual,
+			'after:top-3/4 after:opacity-60': actual && letter && letter !== actual,
 			'text-error opacity-60': !actual && passed,
 			'line-through': !letter && actual && letter !== actual,
 			'animate-wordBounce text-primary': wordPerfect
@@ -44,3 +51,9 @@
 		/>
 	{/if}
 </span>
+
+<style>
+	.letter:after {
+		content: var(--letter);
+	}
+</style>
