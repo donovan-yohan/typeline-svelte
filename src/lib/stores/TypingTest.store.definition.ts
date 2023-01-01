@@ -4,3 +4,8 @@ export interface WordStore {
 	generator: WordGenerator;
 	words: string[];
 }
+
+export interface AnimationIdStore {
+	word: number;
+	letter: string;
+}

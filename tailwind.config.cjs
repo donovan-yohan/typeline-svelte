@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       animation: {
-        'blink': 'blink 1s cubic-bezier(0.9, 0, 0, 0.9) infinite',
+        'blink': 'blink 1s cubic-bezier(0.9, 0, 0, 0.9) infinite 1s',
         'springWiggle': 'springWiggle 0.2s cubic-bezier(0, 0.95, 0.25, 1)',
         'wordBounce': 'wordBounce 0.25s cubic-bezier(0, 0.5, 0.5, 1) alternate 2'
       },

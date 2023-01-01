@@ -3,7 +3,3 @@ export interface TypingData {
 	actual: string;
 }
 
-export interface AnimationId {
-	word: number;
-	letter: string;
-}
