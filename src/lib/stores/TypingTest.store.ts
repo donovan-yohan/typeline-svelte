@@ -1,7 +1,7 @@
 import { WordGenerator } from '$lib/utils/wordGenerator/wordGenerator';
 import type { optionFlags } from '$lib/utils/wordGenerator/wordGenerator.definition';
 import { writable } from 'svelte/store';
-import type { WordStore, AnimationIdStore } from './TypingTest.store.definition';
+import type { WordStore } from './TypingTest.store.definition';
 
 export const isScrolling = writable(false);
 
@@ -29,4 +29,6 @@ function createWordGenerator() {
 }
 export const wordGenerator = createWordGenerator();
 
-export const animationId = writable<AnimationIdStore>({ letter: '00', word: 0 });
+export const animationId = writable<number>(0);
+
+export const cursorRef = writable<HTMLElement | null>(null);

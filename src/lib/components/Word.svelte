@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { isScrolling, animationId } from '$lib/stores/TypingTest.store';
-	import { scrollTo } from '$lib/utils/ScrollTo/ScrollTo';
 	import cx from 'classnames';
-	import { send, receive } from '$lib/styles/cursorTransition';
+	import { send, receive } from '$lib/styles/highlightTransition';
 	import Letter from './Letter.svelte';
-	import { quartOut } from 'svelte/easing';
 
 	export let id: number;
 	export let expected: string;
@@ -17,16 +15,8 @@
 	let numOfCharsTyped = 0;
 
 	$: if (ref && typingContainer && active && !$isScrolling) {
-		scrollTo({
-			element: ref,
-			container: typingContainer,
-			easing: quartOut,
-			offset: -ref.clientHeight * 1.75,
-			delay: 0,
-			duration: 700,
-			onStart: () => isScrolling.set(true),
-			onDone: () => isScrolling.set(false)
-		});
+		const offset = ref.offsetTop > ref.offsetHeight ? `calc(-${ref.offsetTop}px + 7rem)` : 0;
+		typingContainer.style.transform = `translateY(${offset})`;
 	}
 
 	$: if (actual) {
@@ -43,8 +33,6 @@
 >
 	{#each expected.split('') as letter, j (id + '' + j)}
 		<Letter
-			wordId={id}
-			letterId={j}
 			{letter}
 			actual={actual.split('')[j] || ''}
 			active={active && actual.length === j}
@@ -55,10 +43,8 @@
 	{/each}
 	{#each [...actual
 			.split('')
-			.slice(expected.length), '', ''] as letter, j (id + '' + (j + expected.length))}
+			.slice(expected.length), ''] as letter, j (id + '' + (j + expected.length))}
 		<Letter
-			wordId={id}
-			letterId={j + expected.length}
 			letter={''}
 			actual={letter}
 			active={active && actual.length === j + expected.length}
@@ -70,7 +56,7 @@
 	{#if active}
 		<span
 			in:receive={{ key: id }}
-			out:send={{ key: $animationId.word }}
+			out:send={{ key: $animationId }}
 			class={cx({
 				'absolute left-0 top-0 -z-10 h-full w-full rounded-md bg-primary opacity-25 transition-colors duration-300 ease-out': true,
 				'bg-error': actual !== expected.slice(0, actual.length)

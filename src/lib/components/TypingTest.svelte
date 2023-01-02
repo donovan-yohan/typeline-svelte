@@ -1,7 +1,8 @@
 <script lang="ts">
+	import { isFinished, isRunning } from '$lib/stores/GameState.store';
+	import cx from 'classnames';
 	import type { TypingData } from '$lib/definitions/TypingTest.definition';
-	import { animationId, wordGenerator } from '$lib/stores/TypingTest.store';
-	import type { AnimationIdStore } from '$lib/stores/TypingTest.store.definition';
+	import { animationId, wordGenerator, cursorRef } from '$lib/stores/TypingTest.store';
 	import { getTypingInputType, TypingInputType } from '$lib/utils/typingTest.util';
 	import { MIN_WORDS_AHEAD } from '$lib/utils/wordGenerator/wordGenerator.config';
 	import Word from './Word.svelte';
@@ -24,36 +25,20 @@
 		typedCharacter: string,
 		currentWord: string,
 		activeIndex: number
-	): AnimationIdStore {
+	): number {
 		const type = getTypingInputType(typedCharacter, currentWord);
 		if (type === TypingInputType.BACKSPACE) {
 			if (currentWord === '' && activeIndex > 0) {
-				return {
-					letter: `${activeIndex - 1}${typed[activeIndex - 1].length}`,
-					word: activeIndex - 1
-				};
+				return activeIndex - 1;
 			} else if (currentWord !== '') {
-				return {
-					letter: `${activeIndex}${currentWord.length - 1}`,
-					word: activeIndex
-				};
+				return activeIndex;
 			}
 		} else if (type === TypingInputType.SPACE) {
-			return {
-				letter: `${activeIndex + 1}0`,
-				word: activeIndex + 1
-			};
+			return activeIndex + 1;
 		} else if (type === TypingInputType.SINGLE_CHARACTER) {
-			return {
-				letter: `${activeIndex}${currentWord.length + 1}`,
-				word: activeIndex
-			};
+			return activeIndex;
 		}
-
-		return {
-			letter: `${activeIndex}${currentWord.length}`,
-			word: activeIndex
-		};
+		return activeIndex;
 	}
 
 	function handleKeyDown(e: KeyboardEvent) {
@@ -62,6 +47,7 @@
 
 		// update input value
 		const type = getTypingInputType(e.key, typed[activeIndexLocal]);
+
 		if (type === TypingInputType.BACKSPACE) {
 			if (typed[activeIndexLocal].length > 0) {
 				typed[activeIndexLocal] = typed[activeIndexLocal].slice(0, -1);
@@ -71,6 +57,7 @@
 		} else if (type === TypingInputType.SPACE) {
 			typed = [...typed, ''];
 		} else if (type === TypingInputType.SINGLE_CHARACTER) {
+			if (!$isRunning) isRunning.set(true);
 			typed[activeIndexLocal] += e.key;
 		}
 	}
@@ -82,10 +69,10 @@
 	}
 </script>
 
-<div class="relative flex-col">
+<div class="relative max-h-72 flex-col overflow-hidden">
 	<div
 		bind:this={typingContainer}
-		class="no-scrollbar relative -z-10 max-h-72 select-none overflow-hidden bg-transparent"
+		class="no-scrollbar relative -z-10 select-none scroll-smooth bg-transparent transition-all duration-500 ease-out"
 	>
 		{#each typeTestData as { expected, actual }, i (i)}
 			<Word
@@ -97,11 +84,17 @@
 				{typingContainer}
 			/>
 		{/each}
+		<span
+			bind:this={$cursorRef}
+			class={cx({
+				'ease absolute top-0 left-0 inline-block h-16 w-[3px] bg-primary transition-all duration-200': true
+			})}
+		/>
 	</div>
 
 	<input
 		type="text"
-		placeholder="Type here"
+		disabled={$isFinished}
 		class="absolute left-0 top-0 z-10 h-full w-full opacity-0"
 		on:keydown|preventDefault|trusted={handleKeyDown}
 	/>
