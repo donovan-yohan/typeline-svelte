@@ -1,18 +1,19 @@
 <script lang="ts">
-	import { isFinished, isRunning } from '$lib/stores/GameState.store';
+	import { isFinished, isRunning, startTime } from '$lib/stores/GameState.store';
 	import cx from 'classnames';
 	import type { TypingData } from '$lib/definitions/TypingTest.definition';
-	import { animationId, wordGenerator, cursorRef } from '$lib/stores/TypingTest.store';
+	import { animationId, wordGenerator, cursorRef, keypresses } from '$lib/stores/TypingTest.store';
 	import { getTypingInputType, TypingInputType } from '$lib/utils/typingTest.util';
 	import { MIN_WORDS_AHEAD } from '$lib/utils/wordGenerator/wordGenerator.config';
 	import Word from './Word.svelte';
+	import { BACKSPACE_CHAR } from '$lib/utils/keypress/keypress.util.definition';
 
 	export let sourceText: string[];
 
 	let typed: string[] = [''];
 	let typingContainer: HTMLElement;
 
-	function generateTypeData(sourceText: string[], typed: string[]) {
+	function generateTypeData(typed: string[]) {
 		return sourceText.map((expected, i) => {
 			return {
 				expected,
@@ -41,6 +42,17 @@
 		return activeIndex;
 	}
 
+	function addKeypress(key: string) {
+		keypresses.update((keys) => {
+			return [...keys, { key, timestamp: Date.now() - $startTime }];
+		});
+	}
+
+	function start() {
+		isRunning.set(true);
+		startTime.set(Date.now());
+	}
+
 	function handleKeyDown(e: KeyboardEvent) {
 		const activeIndexLocal = typed.length - 1;
 		animationId.set(getNextActiveId(e.key, typed[activeIndexLocal], activeIndexLocal));
@@ -54,15 +66,18 @@
 			} else if (activeIndexLocal > 0) {
 				typed = typed.slice(0, -1);
 			}
+			addKeypress(BACKSPACE_CHAR);
 		} else if (type === TypingInputType.SPACE) {
 			typed = [...typed, ''];
+			addKeypress(' ');
 		} else if (type === TypingInputType.SINGLE_CHARACTER) {
-			if (!$isRunning) isRunning.set(true);
+			if (!$isRunning) start();
 			typed[activeIndexLocal] += e.key;
+			addKeypress(e.key);
 		}
 	}
 
-	$: typeTestData = generateTypeData(sourceText, typed);
+	$: typeTestData = generateTypeData(typed);
 	$: activeIndex = typed.length - 1;
 	$: if (activeIndex > sourceText.length - MIN_WORDS_AHEAD) {
 		wordGenerator.generate();

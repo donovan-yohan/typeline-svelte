@@ -1,3 +1,4 @@
+import type { KeypressType } from '$lib/utils/keypress/keypress.util.definition';
 import { WordGenerator } from '$lib/utils/wordGenerator/wordGenerator';
 import type { optionFlags } from '$lib/utils/wordGenerator/wordGenerator.definition';
 import { writable } from 'svelte/store';
@@ -28,6 +29,8 @@ function createWordGenerator() {
 	};
 }
 export const wordGenerator = createWordGenerator();
+
+export const keypresses = writable<KeypressType[]>([]);
 
 export const animationId = writable<number>(0);
 
