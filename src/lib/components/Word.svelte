@@ -22,12 +22,14 @@
 	$: if (actual) {
 		numOfCharsTyped++;
 	}
+
+	$: wordCorrect = actual === expected.slice(0, actual.length);
 </script>
 
 <span
 	bind:this={ref}
 	class={cx({
-		'relative z-20 mx-2 my-4 inline-flex h-16 text-4xl ': true,
+		'relative z-10 mx-2 my-4 inline-flex h-16 text-4xl ': true,
 		'animate-springWiggle': passed && actual !== expected
 	})}
 >
@@ -58,8 +60,9 @@
 			in:receive={{ key: id }}
 			out:send={{ key: $animationId }}
 			class={cx({
-				'absolute left-0 top-0 -z-10 h-full w-full rounded-md bg-primary opacity-25 transition-colors duration-300 ease-out': true,
-				'bg-error': actual !== expected.slice(0, actual.length)
+				'absolute left-0 top-0 -z-10 h-full w-full rounded-md transition-colors duration-300 ease-out': true,
+				'bg-primary-900': wordCorrect,
+				'bg-error-900': !wordCorrect
 			})}
 		/>
 	{/if}

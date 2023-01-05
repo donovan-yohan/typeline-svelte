@@ -10,11 +10,11 @@
 </script>
 
 <div class={$$props.class}>
-	<div id="track" class="bg-base relative h-1 w-full overflow-x-hidden rounded bg-base-content/50">
+	<div id="track" class="relative h-1 w-full overflow-x-hidden rounded">
 		<span
 			id="thumb"
 			style={'transform: translateX(' + thumbPosition + '%)'}
-			class="absolute -left-full top-0 h-full w-full bg-base-content transition-transform duration-1000 ease-linear"
+			class="absolute -left-full top-0 h-full w-full bg-primary-600 transition-transform duration-1000 ease-linear"
 		/>
 	</div>
 	<input bind:value type="range" {min} {max} {disabled} class="hidden" />

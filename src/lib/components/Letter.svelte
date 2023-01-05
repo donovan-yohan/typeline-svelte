@@ -21,10 +21,10 @@
 		$cursorRef.style.transform = `translate(${offsetX}, ${offsetY})`;
 
 		$cursorRef.classList.remove('animate-blink');
-		$cursorRef.classList.remove('bg-error');
+		$cursorRef.classList.remove('bg-error-500');
 		void $cursorRef.offsetWidth;
 		$cursorRef.classList.add('animate-blink');
-		if (wordIncorrect) $cursorRef.classList.add('bg-error');
+		if (wordIncorrect) $cursorRef.classList.add('bg-error-500');
 	}
 </script>
 
@@ -38,14 +38,14 @@
 		style="--letter: '{actualMemo}'"
 		class={cx({
 			'letter inline-block h-full overflow-hidden transition-all duration-200 ease-in-out': true,
-			'after:absolute after:left-0 after:top-1/2 after:w-full after:text-center after:text-base after:text-base-content after:opacity-0 after:transition-all after:ease-in ': true,
-			'text-base-content opacity-60': !actual && !passed,
-			'text-base-content': actual && letter === actual && !wordPerfect,
-			'animate-springWiggle text-error': actual && letter !== actual,
+			'after:text-default after:absolute after:left-0 after:top-1/2 after:w-full after:text-center after:text-base after:opacity-0 after:transition-all after:ease-in': true,
+			'opacity-60': !actual && !passed,
+			'': actual && letter === actual && !wordPerfect,
+			'animate-springWiggle text-error-500': actual && letter !== actual,
 			'after:top-3/4 after:opacity-60': actual && letter && letter !== actual,
-			'animate-springWiggle text-error opacity-60': !actual && passed,
+			'animate-springWiggle text-error-500 opacity-60': !actual && passed,
 			'line-through': !letter && actual && letter !== actual,
-			'animate-wordBounce text-primary': wordPerfect
+			'animate-wordBounce text-primary-500': wordPerfect
 		})}
 	>
 		{letter || actual}

@@ -22,5 +22,5 @@
 
 <div class={cx({ [$$props.class]: true, 'flex items-center gap-2': true })}>
 	<Range class={'w-full'} value={time} />
-	<span class="font-bold text-base-content/50">{formatTime(time)}</span>
+	<span class="font-bold text-primary-600">{formatTime(time)}</span>
 </div>

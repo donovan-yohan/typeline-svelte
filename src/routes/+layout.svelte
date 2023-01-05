@@ -1,5 +1,7 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
+	import '@skeletonlabs/skeleton/themes/theme-rocket.css';
+	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.css';
 </script>
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import WPMChart from './charts/WPMChart.svelte';
 	import { wordGenerator } from './../stores/TypingTest.store';
 	import { MIN_WORDS_AHEAD } from './../utils/wordGenerator/wordGenerator.config';
 	import Timer from './Timer.svelte';
@@ -10,4 +11,6 @@
 <div>
 	<TypingTest sourceText={$wordGenerator.words} />
 	<Timer class="mt-4" />
+
+	<!-- <WPMChart /> -->
 </div>

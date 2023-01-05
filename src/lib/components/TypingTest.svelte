@@ -89,6 +89,12 @@
 		bind:this={typingContainer}
 		class="no-scrollbar relative -z-10 select-none scroll-smooth bg-transparent transition-all duration-500 ease-out"
 	>
+		<span
+			bind:this={$cursorRef}
+			class={cx({
+				'ease absolute top-0 left-0 z-20 inline-block h-16 w-[3px] bg-primary-500 transition-all duration-150': true
+			})}
+		/>
 		{#each typeTestData as { expected, actual }, i (i)}
 			<Word
 				active={i === activeIndex}
@@ -99,18 +105,12 @@
 				{typingContainer}
 			/>
 		{/each}
-		<span
-			bind:this={$cursorRef}
-			class={cx({
-				'ease absolute top-0 left-0 inline-block h-16 w-[3px] bg-primary transition-all duration-200': true
-			})}
-		/>
 	</div>
 
 	<input
 		type="text"
 		disabled={$isFinished}
-		class="absolute left-0 top-0 z-10 h-full w-full opacity-0"
+		class="absolute left-0 top-0 z-10 h-full w-full opacity-0 disabled:border-none disabled:bg-transparent"
 		on:keydown|preventDefault|trusted={handleKeyDown}
 	/>
 </div>
