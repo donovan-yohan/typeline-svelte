@@ -82,6 +82,9 @@
 	$: if (activeIndex > sourceText.length - MIN_WORDS_AHEAD) {
 		wordGenerator.generate();
 	}
+
+	// TODO: remove this
+	$: if ($isFinished) console.log($keypresses);
 </script>
 
 <div class="relative max-h-72 flex-col overflow-hidden">
