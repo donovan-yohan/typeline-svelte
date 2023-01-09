@@ -1,30 +1,35 @@
 <script lang="ts">
-	import { cursorRef } from '$lib/stores/TypingTest.store';
+	import { getOffset } from '$lib/utils/offset.util';
+	import { typingStateList, typingContainer } from '$lib/stores/TypingTest.store';
 	import cx from 'classnames';
 
 	export let letter: string;
 	export let actual: string;
-	export let active: boolean;
 	export let wordIncorrect: boolean;
 	export let wordPerfect: boolean;
 	export let passed: boolean;
+	export let wordId: number;
+	export let letterId: number;
 
 	let actualMemo = actual;
 	let letterRef: HTMLElement;
 
 	$: if (actual) actualMemo = actual;
-	$: if (active && $cursorRef && letterRef) {
-		const wordRef = letterRef.offsetParent as HTMLElement | null;
-		const offsetX = `calc(${letterRef.offsetLeft}px + ${wordRef?.offsetLeft}px)`;
-		const offsetY = `${wordRef?.offsetTop}px`;
 
-		$cursorRef.style.transform = `translate(${offsetX}, ${offsetY})`;
-
-		$cursorRef.classList.remove('animate-blink');
-		$cursorRef.classList.remove('bg-error-500');
-		void $cursorRef.offsetWidth;
-		$cursorRef.classList.add('animate-blink');
-		if (wordIncorrect) $cursorRef.classList.add('bg-error-500');
+	$: {
+		if (letterRef && $typingContainer !== null) {
+			$typingStateList.forEach((state) => {
+				// TODO: handle active vs inactive cases because overflow letters are not being handled
+				if (state.typed?.length - 1 === wordId && state.typed[wordId]?.length === letterId) {
+					const offset = getOffset(letterRef, $typingContainer as HTMLElement);
+					typingStateList.updateCursor(state.id, {
+						x: offset.left,
+						y: offset.top,
+						incorrect: wordIncorrect
+					});
+				}
+			});
+		}
 	}
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isScrolling, animationId } from '$lib/stores/TypingTest.store';
+	import { typingContainer } from '$lib/stores/TypingTest.store';
 	import cx from 'classnames';
 	import { send, receive } from '$lib/styles/highlightTransition';
 	import Letter from './Letter.svelte';
@@ -8,17 +8,18 @@
 	export let expected: string;
 	export let actual: string;
 	export let active: boolean;
-	export let typingContainer: HTMLElement;
 	export let passed: boolean;
+	export let animationId: number;
 
 	let ref: HTMLElement;
 	let numOfCharsTyped = 0;
 
-	$: if (ref && typingContainer && active && !$isScrolling) {
+	$: if (ref && $typingContainer && active) {
 		const offset = ref.offsetTop > ref.offsetHeight ? `calc(-${ref.offsetTop}px + 7rem)` : 0;
-		typingContainer.style.transform = `translateY(${offset})`;
+		$typingContainer.style.transform = `translateY(${offset})`;
 	}
 
+	// TODO: move this into the main input component
 	$: if (actual) {
 		numOfCharsTyped++;
 	}
@@ -37,10 +38,11 @@
 		<Letter
 			{letter}
 			actual={actual.split('')[j] || ''}
-			active={active && actual.length === j}
 			wordIncorrect={actual !== expected.slice(0, actual.length)}
 			wordPerfect={actual === expected && numOfCharsTyped === expected.length && passed}
 			{passed}
+			wordId={id}
+			letterId={j}
 		/>
 	{/each}
 	{#each [...actual
@@ -49,16 +51,17 @@
 		<Letter
 			letter={''}
 			actual={letter}
-			active={active && actual.length === j + expected.length}
 			wordIncorrect={actual !== expected}
 			wordPerfect={false}
 			{passed}
+			wordId={id}
+			letterId={j + expected.length}
 		/>
 	{/each}
 	{#if active}
 		<span
 			in:receive={{ key: id }}
-			out:send={{ key: $animationId }}
+			out:send={{ key: animationId }}
 			class={cx({
 				'absolute left-0 top-0 -z-10 h-full w-full rounded-md transition-colors duration-300 ease-out': true,
 				'bg-primary-900': wordCorrect,
