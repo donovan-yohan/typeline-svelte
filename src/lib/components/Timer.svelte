@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { gameState } from '$lib/stores/TypingTest.store';
+	import { isFinished, isRunning } from '$lib/stores/TypingTest.store';
 	import { formatTime } from '$lib/utils/time.util';
 	import cx from 'classnames';
 	import Range from './Range.svelte';
@@ -8,7 +8,7 @@
 
 	let timer: NodeJS.Timer;
 
-	$: if ($gameState.isRunning && !timer) {
+	$: if ($isRunning && !timer) {
 		timer = setInterval(() => {
 			time--;
 		}, 1000);
@@ -16,7 +16,7 @@
 
 	$: if (timer && time === 0) {
 		clearInterval(timer);
-		gameState.update((s) => ({ ...s, isFinished: true }));
+		isFinished.set(true);
 	}
 </script>
 

@@ -1,4 +1,4 @@
-import { BACKSPACE_CHAR } from './keypress/keypress.util.definition';
+import { BACKSPACE_CHAR, type KeypressType } from './keypress/keypress.util.definition';
 
 export enum TypingInputType {
 	BACKSPACE = 'Backspace',

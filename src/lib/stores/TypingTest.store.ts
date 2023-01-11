@@ -3,10 +3,31 @@ import type { optionFlags } from '$lib/utils/wordGenerator/wordGenerator.definit
 import { writable } from 'svelte/store';
 import type {
 	TypingStateStore,
-	CursorStore,
+	CursorType,
 	KeypressStore,
 	SourceTextStore
 } from './TypingTest.store.definition';
+
+export const defaultKeypressStore: KeypressStore = {
+	id: 'default',
+	keypresses: [],
+	interval: false,
+	timeout: 0,
+	activeIndex: 0
+};
+
+export const defaultCursor: CursorType = {
+	x: 0,
+	y: 0,
+	incorrect: false
+};
+
+export const defaultTypingState: TypingStateStore = {
+	id: 'default',
+	typed: [''],
+	keypresses: [],
+	cursor: { ...defaultCursor }
+};
 
 function createWordGenerator() {
 	const { subscribe, set, update } = writable<SourceTextStore>({
@@ -32,82 +53,12 @@ function createWordGenerator() {
 }
 export const wordGenerator = createWordGenerator();
 
-export const keypressesList = writable<KeypressStore[]>([
-	{
-		id: 'default',
-		keypresses: [],
-		interval: undefined
-	}
-]);
+export const isRunning = writable(false);
+export const isFinished = writable(false);
+export const isEditing = writable(false);
+export const isReplay = writable(false);
+export const startTime = writable(0);
 
 export const animationId = writable<number>(0);
 
-export const gameState = writable({
-	isRunning: false,
-	startTime: 0,
-	isFinished: false,
-	isEditing: false,
-	isReplay: false
-});
-
-export function createTypingStateList() {
-	const { subscribe, set, update } = writable<TypingStateStore[]>([
-		{
-			id: 'default',
-			typed: [''],
-			cursor: {
-				x: 0,
-				y: 0,
-				incorrect: false
-			}
-		}
-	]);
-
-	return {
-		subscribe,
-		set,
-		update,
-		forceUpdate: () => {
-			update((store) => [...store]);
-		},
-		updateCursor: (id: string, newCursor: CursorStore) => {
-			update((store) => {
-				const target = store.find((s) => s.id === id);
-				if (!target) return store;
-				target.cursor = newCursor;
-				return [...store.filter((s) => s.id !== id), { ...target }];
-			});
-		}
-	};
-}
-
-export const typingStateList = createTypingStateList();
-
 export const typingContainer = writable<HTMLElement | null>(null);
-
-// export function createCursorStateList() {
-// 	const { subscribe, set, update } = writable<CursorStore[]>([
-// 		{
-// 			id: 'default',
-// 			x: 0,
-// 			y: 0,
-// 			incorrect: false
-// 		}
-// 	]);
-
-// 	return {
-// 		subscribe,
-// 		set,
-// 		update,
-// 		forceUpdate: () => {
-// 			update((store) => [...store]);
-// 		},
-// 		updateCursor(id: string, newCursor: Omit<CursorStore, 'id'>) {
-// 			update((store) => {
-// 				return [...store.filter((cursor) => cursor.id !== id), { id, ...newCursor }];
-// 			});
-// 		}
-// 	};
-// }
-
-// export const cursorList = createCursorStateList();

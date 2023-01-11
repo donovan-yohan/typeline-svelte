@@ -3,6 +3,7 @@
 	import cx from 'classnames';
 	import { send, receive } from '$lib/styles/highlightTransition';
 	import Letter from './Letter.svelte';
+	import type { ActiveIdType } from '$lib/stores/TypingTest.store.definition';
 
 	export let id: number;
 	export let expected: string;
@@ -10,6 +11,7 @@
 	export let active: boolean;
 	export let passed: boolean;
 	export let animationId: number;
+	export let allActive: ActiveIdType[];
 
 	let ref: HTMLElement;
 	let numOfCharsTyped = 0;
@@ -43,6 +45,8 @@
 			{passed}
 			wordId={id}
 			letterId={j}
+			{allActive}
+			on:active
 		/>
 	{/each}
 	{#each [...actual
@@ -56,6 +60,8 @@
 			{passed}
 			wordId={id}
 			letterId={j + expected.length}
+			{allActive}
+			on:active
 		/>
 	{/each}
 	{#if active}

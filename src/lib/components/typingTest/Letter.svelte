@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { getOffset } from '$lib/utils/offset.util';
-	import { typingStateList, typingContainer } from '$lib/stores/TypingTest.store';
+	import { typingContainer } from '$lib/stores/TypingTest.store';
 	import cx from 'classnames';
+	import { createEventDispatcher } from 'svelte';
+	import type { ActiveIdType } from '$lib/stores/TypingTest.store.definition';
 
 	export let letter: string;
 	export let actual: string;
@@ -10,26 +12,35 @@
 	export let passed: boolean;
 	export let wordId: number;
 	export let letterId: number;
+	export let allActive: ActiveIdType[];
+
+	const dispatch = createEventDispatcher();
 
 	let actualMemo = actual;
+	let allActiveMemo: ActiveIdType[] = [];
 	let letterRef: HTMLElement;
 
 	$: if (actual) actualMemo = actual;
 
-	$: {
-		if (letterRef && $typingContainer !== null) {
-			$typingStateList.forEach((state) => {
-				// TODO: handle active vs inactive cases because overflow letters are not being handled
-				if (state.typed?.length - 1 === wordId && state.typed[wordId]?.length === letterId) {
-					const offset = getOffset(letterRef, $typingContainer as HTMLElement);
-					typingStateList.updateCursor(state.id, {
+	$: if (
+		letterRef &&
+		$typingContainer &&
+		JSON.stringify(allActive) != JSON.stringify(allActiveMemo)
+	) {
+		allActiveMemo = allActive;
+		allActiveMemo.forEach((id, i) => {
+			if (id.word === wordId && id.letter === letterId) {
+				const offset = getOffset(letterRef, $typingContainer as HTMLElement);
+				dispatch('active', {
+					index: i,
+					cursor: {
 						x: offset.left,
 						y: offset.top,
 						incorrect: wordIncorrect
-					});
-				}
-			});
-		}
+					}
+				});
+			}
+		});
 	}
 </script>
 

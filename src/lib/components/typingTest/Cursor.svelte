@@ -1,8 +1,8 @@
 <script lang="ts">
 	import cx from 'classnames';
-	import type { CursorStore } from '$lib/stores/TypingTest.store.definition';
+	import type { CursorType } from '$lib/stores/TypingTest.store.definition';
 
-	export let cursor: CursorStore;
+	export let cursor: CursorType;
 	let cursorRef: HTMLElement;
 
 	$: if (cursor && cursorRef) {

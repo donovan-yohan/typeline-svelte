@@ -6,7 +6,7 @@ export interface SourceTextStore {
 	words: string[];
 }
 
-export interface CursorStore {
+export interface CursorType {
 	x: number;
 	y: number;
 	incorrect: boolean;
@@ -17,7 +17,9 @@ export interface CursorStore {
 export interface KeypressStore {
 	id: string;
 	keypresses: KeypressType[];
-	interval?: NodeJS.Timer;
+	interval: boolean;
+	timeout: number;
+	activeIndex: number;
 }
 
 export interface WordData {
@@ -28,5 +30,11 @@ export interface WordData {
 export interface TypingStateStore {
 	id: string;
 	typed: string[];
-	cursor: CursorStore;
+	keypresses: KeypressType[];
+	cursor: CursorType;
+}
+
+export interface ActiveIdType {
+	word: number;
+	letter: number;
 }

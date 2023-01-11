@@ -46,6 +46,7 @@
 	"dependencies": {
 		"chart.js": "^4.1.1",
 		"classnames": "^2.3.2",
+		"rxjs": "^7.8.0",
 		"seed-random": "^2.2.0"
 	}
 }
