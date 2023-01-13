@@ -1,6 +1,7 @@
 <script lang="ts">
 	import WpmChart from '$lib/components/charts/WPMChart.svelte';
 	import Button from '$lib/components/common/Button/Button.svelte';
+	import ResultsWrapper from '$lib/components/ResultsWrapper.svelte';
 	import TypingWrapper from '$lib/components/TypingWrapper.svelte';
 	import { wordGenerator } from '$lib/stores/TypingTest.store';
 
@@ -8,14 +9,7 @@
 	wordGenerator.initialize(data.seed);
 </script>
 
-<div class="my-auto h-full w-auto">
+<div class="h-full w-full">
 	<TypingWrapper />
-	<div class="flex h-screen items-center">
-		<div class="w-full">
-			<div class="h-[33vh]">
-				<WpmChart />
-			</div>
-			<Button class="mt-16">hello world</Button>
-		</div>
-	</div>
+	<ResultsWrapper />
 </div>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Cursor from './Cursor.svelte';
 	import {
 		wordGenerator,
 		animationId,
@@ -13,7 +12,7 @@
 	} from '$lib/stores/TypingTest.store';
 	import { getNextActiveId, getTypingInputType, TypingInputType } from '$lib/utils/typingTest.util';
 	import { MIN_WORDS_AHEAD } from '$lib/utils/wordGenerator/wordGenerator.config';
-	import Word from './Word.svelte';
+	import Word from './components/Word.svelte';
 	import { BACKSPACE_CHAR } from '$lib/utils/keypress/keypress.util.definition';
 	import {
 		sampleKeypresses,
@@ -21,9 +20,9 @@
 		sampleKeypresses3,
 		sampleKeypresses4
 	} from '../charts/data';
-	import Button from '../common/Button/Button.svelte';
 	import type { TypingStateStore } from '$lib/stores/TypingTest.store.definition';
-	import RobotTyper from './RobotTyper.svelte';
+	import RobotTyper from './components/RobotTyper.svelte';
+	import Cursor from './components/Cursor.svelte';
 
 	export let sourceText: string[];
 
@@ -131,8 +130,6 @@
 	}
 </script>
 
-<Button on:click={startReplay}>Play Replay</Button>
-<Button on:click={addSecondaryInput}>add secondary input</Button>
 <div class="relative max-h-72 flex-col overflow-hidden">
 	<div
 		bind:this={$typingContainer}

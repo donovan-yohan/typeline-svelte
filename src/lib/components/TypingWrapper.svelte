@@ -2,12 +2,12 @@
 	import { wordGenerator } from './../stores/TypingTest.store';
 	import { MIN_WORDS_AHEAD } from './../utils/wordGenerator/wordGenerator.config';
 	import Timer from './Timer.svelte';
-	import TypingTest from './typingTest/TypingTest.svelte';
+	import TypingTest from './TypingTest/TypingTest.svelte';
 
 	wordGenerator.generate(MIN_WORDS_AHEAD);
 </script>
 
-<div class="flex h-screen flex-col justify-center">
+<div class="mt-[36vh] flex flex-col justify-center">
 	<TypingTest sourceText={$wordGenerator.words} />
 	<Timer class="mt-4" />
 </div>
