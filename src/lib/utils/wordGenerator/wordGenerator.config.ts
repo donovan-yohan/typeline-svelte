@@ -48,7 +48,9 @@ export const DEFAULT_OPTIONS: optionFlags = {
 	hasPunctuation: false,
 	hasSymbols: false,
 	minWordLength: 1,
-	maxWordLength: 7
+	maxWordLength: 7,
+	customSymbolsTable: SYMBOL_TABLE,
+	customPunctuationTable: PUNCTUATION_TABLE
 };
 
 export const DEFAULT_TIME = 30;

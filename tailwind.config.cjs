@@ -6,7 +6,24 @@ module.exports = {
 		require('path').join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')
 	],
 	theme: {
+		fontFamily: {
+			sans: ['Nunito', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+			serif: ['ui-serif', 'Georgia', 'Cambria', '"Times New Roman"', 'Times', 'serif'],
+			mono: [
+				'ui-monospace',
+				'SFMono-Regular',
+				'Menlo',
+				'Monaco',
+				'Consolas',
+				'"Liberation Mono"',
+				'"Courier New"',
+				'monospace'
+			]
+		},
 		extend: {
+			fontFamily: {
+				numbers: ['Comfortaa', 'sans-serif']
+			},
 			animation: {
 				blink: 'blink 1s cubic-bezier(0.9, 0, 0, 0.9) infinite 1s',
 				springWiggle: 'springWiggle 0.2s cubic-bezier(0, 0.95, 0.25, 1)',
