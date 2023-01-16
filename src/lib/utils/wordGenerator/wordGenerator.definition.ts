@@ -1,7 +1,7 @@
 interface SpecialCharacter {
 	char: string;
 	probability: number;
-	placement: CHARACTER_PLACEMENT;
+	placement: CharacterPlacement;
 }
 
 export interface optionFlags {
@@ -13,6 +13,7 @@ export interface optionFlags {
 	maxWordLength: number;
 	customSymbolsTable?: SpecialCharacter[];
 	customPunctuationTable?: SpecialCharacter[];
+	customWordBank?: string[];
 }
 
 export interface TestInfo {
@@ -21,10 +22,41 @@ export interface TestInfo {
 	time: number;
 }
 
-export enum CHARACTER_PLACEMENT {
-	BEFORE = 'BEFORE',
-	AFTER = 'AFTER',
-	MIDDLE = 'MIDDLE',
-	WRAP = 'WRAP',
-	ALONE = 'ALONE'
+export enum CharacterPlacement {
+	BEFORE,
+	AFTER,
+	MIDDLE,
+	WRAP,
+	ALONE
 }
+
+export enum SeedType {
+	ADVANCED,
+	STANDARD,
+	SYMBOLS,
+	PUNCTUATION
+}
+
+interface SeedConstants {
+	numValues: number;
+	totalLength: number;
+}
+
+export const SeedTypeConstants: { [key in SeedType]: SeedConstants } = {
+	[SeedType.ADVANCED]: {
+		numValues: 7,
+		totalLength: 12
+	},
+	[SeedType.STANDARD]: {
+		numValues: 6,
+		totalLength: 6
+	},
+	[SeedType.SYMBOLS]: {
+		numValues: 6,
+		totalLength: 12
+	},
+	[SeedType.PUNCTUATION]: {
+		numValues: 8,
+		totalLength: 16
+	}
+};

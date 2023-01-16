@@ -13,7 +13,7 @@ import {
 	SYMBOL_CHANCE,
 	SYMBOL_TABLE
 } from './wordGenerator.config';
-import { CHARACTER_PLACEMENT, type optionFlags } from './wordGenerator.definition';
+import { CharacterPlacement, type optionFlags } from './wordGenerator.definition';
 import { filterWordBank, formatWord, generateDate, getRandomWithBias } from './wordGenerator.utils';
 
 export class WordGenerator {
@@ -74,7 +74,7 @@ export class WordGenerator {
 				}
 			});
 
-			if (symbol.placement === CHARACTER_PLACEMENT.MIDDLE) {
+			if (symbol.placement === CharacterPlacement.MIDDLE) {
 				word = this.getRandomWord() + symbol.char + this.getRandomWord();
 			} else if (symbol.char === '$') {
 				word = formatWord(this.getRandom(0, 100).toFixed(2), symbol.char, symbol.placement);
@@ -84,7 +84,7 @@ export class WordGenerator {
 					symbol.char,
 					symbol.placement
 				);
-			} else if (symbol.placement === CHARACTER_PLACEMENT.WRAP) {
+			} else if (symbol.placement === CharacterPlacement.WRAP) {
 				word = formatWord(this.getRandomWord(), symbol.char, symbol.placement);
 			} else {
 				word = symbol.char;
@@ -109,7 +109,7 @@ export class WordGenerator {
 						}
 					});
 
-					if (punctuation.placement == CHARACTER_PLACEMENT.WRAP) {
+					if (punctuation.placement == CharacterPlacement.WRAP) {
 						word = formatWord(word, punctuation.char, punctuation.placement);
 					} else word += punctuation.char;
 				} else {

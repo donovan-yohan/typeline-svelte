@@ -4,7 +4,7 @@ import {
 	OLD_DATE_CHANCE,
 	SHORT_WORD_MAX_LENGTH
 } from './wordGenerator.config';
-import { CHARACTER_PLACEMENT } from './wordGenerator.definition';
+import { CharacterPlacement, SeedType, SeedTypeConstants } from './wordGenerator.definition';
 import shortWords from '$lib/assets/words/short';
 import mediumWords from '$lib/assets/words/medium';
 import longWords from '$lib/assets/words/long';
@@ -56,10 +56,10 @@ export function generateDate(r: number, random: () => number) {
 	}
 }
 
-export function formatWord(word: string, symbol: string, placement: CHARACTER_PLACEMENT): string {
-	if (placement === CHARACTER_PLACEMENT.BEFORE) {
+export function formatWord(word: string, symbol: string, placement: CharacterPlacement): string {
+	if (placement === CharacterPlacement.BEFORE) {
 		return symbol + word;
-	} else if (placement === CHARACTER_PLACEMENT.AFTER) {
+	} else if (placement === CharacterPlacement.AFTER) {
 		return word + symbol;
 	} else {
 		if (symbol.length == 2) {
@@ -101,4 +101,87 @@ export function filterWordBank(min: number, max: number): string[] {
 		long = long.filter((w) => w.length <= max && w.length > min);
 
 	return combineArraysAlternating([short, med]).concat(long);
+}
+
+const base61 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+export function toBase61(num: number) {
+	let result = '';
+	while (num > 0) {
+		result = base61.charAt(num % 61) + result;
+		num = Math.floor(num / 61);
+	}
+	return result;
+}
+
+export function fromBase61(str: string) {
+	let result = 0;
+	for (let i = 0; i < str.length; i++) {
+		result = result * 61 + base61.indexOf(str.charAt(i));
+	}
+	return result;
+}
+
+export function createOptionsSeed(values: string[], type: SeedType) {
+	if (
+		values.length !== SeedTypeConstants[type].numValues ||
+		values.join('').length !== SeedTypeConstants[type].totalLength
+	)
+		throw new Error(
+			`Invalid values for advanced seed. Expected ${SeedTypeConstants[type].numValues} values with total length ${SeedTypeConstants[type].totalLength}. Received ${values}.`
+		);
+
+	try {
+		if (SeedTypeConstants[type].totalLength > 15) {
+			const bigNum = BigInt('1' + values.join(''));
+			const hashFactor = BigInt('5'.repeat(SeedTypeConstants[type].numValues));
+			console.log({ bigNum, hashFactor });
+
+			const hash = bigNum / hashFactor;
+			const remainder = bigNum % hashFactor;
+
+			const hashNum = Number(hash);
+			const remainderNum = Number(remainder);
+
+			return toBase61(hashNum) + '-' + toBase61(remainderNum);
+		} else {
+			return toBase61(Number('1' + values.join('')));
+		}
+	} catch (e) {
+		throw new Error(`Invalid values for advanced seed. Failed to parse from ${values}`);
+	}
+}
+
+function parseHashedSeed(seed: string, type: SeedType) {
+	const [hash, remainder] = seed.split('-');
+	const hashNum = fromBase61(hash);
+	const remainderNum = fromBase61(remainder);
+
+	const bigNum =
+		BigInt(hashNum) * BigInt('5'.repeat(SeedTypeConstants[type].numValues)) + BigInt(remainderNum);
+	const valuesString = bigNum.toString().substring(1);
+
+	return seedStringToArray(valuesString, type);
+}
+
+function seedStringToArray(seed: string, type: SeedType) {
+	if (type === SeedType.ADVANCED) {
+		const lastTwoChars = seed.substring(seed.length - 2);
+		const str = seed.substring(0, seed.length - 2);
+
+		const values: string[] = str.match(/.{1,2}/g) || [];
+
+		return values.concat(lastTwoChars.split(''));
+	} else {
+		const values: string[] = seed.match(/.{1,2}/g) || [];
+		return values;
+	}
+}
+
+export function parseOptionsSeed(seed: string, type: SeedType) {
+	if (seed.includes('-')) {
+		return parseHashedSeed(seed, type);
+	} else {
+		return seedStringToArray(fromBase61(seed).toString().substring(1), type);
+	}
 }

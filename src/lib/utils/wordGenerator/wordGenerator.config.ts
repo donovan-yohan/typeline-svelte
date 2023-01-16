@@ -1,4 +1,4 @@
-import { CHARACTER_PLACEMENT, type optionFlags } from './wordGenerator.definition';
+import { CharacterPlacement, type optionFlags } from './wordGenerator.definition';
 
 export const MAX_TIME = 120;
 export const MAX_SEED_LENGTH = 100;
@@ -24,22 +24,23 @@ export const MAX_SYMBOL_SPACE = 15;
 export const MIN_WORDS_AHEAD = 40;
 
 export const PUNCTUATION_TABLE = [
-	{ char: '.', probability: 0.392, placement: CHARACTER_PLACEMENT.AFTER },
-	{ char: ',', probability: 0.369, placement: CHARACTER_PLACEMENT.AFTER },
-	{ char: ';', probability: 0.019, placement: CHARACTER_PLACEMENT.AFTER },
-	{ char: ':', probability: 0.02, placement: CHARACTER_PLACEMENT.AFTER },
-	{ char: '!', probability: 0.021, placement: CHARACTER_PLACEMENT.AFTER },
-	{ char: '?', probability: 0.036, placement: CHARACTER_PLACEMENT.AFTER },
-	{ char: '""', probability: 0.161, placement: CHARACTER_PLACEMENT.WRAP }
+	{ char: '.', probability: 0.392, placement: CharacterPlacement.AFTER },
+	{ char: ',', probability: 0.369, placement: CharacterPlacement.AFTER },
+	{ char: ';', probability: 0.019, placement: CharacterPlacement.AFTER },
+	{ char: ':', probability: 0.02, placement: CharacterPlacement.AFTER },
+	{ char: '!', probability: 0.021, placement: CharacterPlacement.AFTER },
+	{ char: '?', probability: 0.036, placement: CharacterPlacement.AFTER },
+	{ char: '""', probability: 0.161, placement: CharacterPlacement.WRAP }
+	// TODO: should I add ' for contractions?
 ];
 
 export const SYMBOL_TABLE = [
-	{ char: '&', probability: 0.166, placement: CHARACTER_PLACEMENT.ALONE },
-	{ char: '()', probability: 0.166, placement: CHARACTER_PLACEMENT.WRAP },
-	{ char: '$', probability: 0.166, placement: CHARACTER_PLACEMENT.BEFORE },
-	{ char: '%', probability: 0.166, placement: CHARACTER_PLACEMENT.AFTER },
-	{ char: '-', probability: 0.166, placement: CHARACTER_PLACEMENT.MIDDLE },
-	{ char: '_', probability: 0.166, placement: CHARACTER_PLACEMENT.MIDDLE }
+	{ char: '&', probability: 0.166, placement: CharacterPlacement.ALONE },
+	{ char: '()', probability: 0.166, placement: CharacterPlacement.WRAP },
+	{ char: '$', probability: 0.166, placement: CharacterPlacement.BEFORE },
+	{ char: '%', probability: 0.166, placement: CharacterPlacement.AFTER },
+	{ char: '-', probability: 0.166, placement: CharacterPlacement.MIDDLE },
+	{ char: '_', probability: 0.166, placement: CharacterPlacement.MIDDLE }
 ];
 
 export const DEFAULT_OPTIONS: optionFlags = {
