@@ -14,7 +14,7 @@
 		<span
 			id="thumb"
 			style={'transform: translateX(' + thumbPosition + '%)'}
-			class="absolute -left-full top-0 h-full w-full bg-primary-600 transition-transform duration-1000 ease-linear"
+			class="bg-default absolute -left-full top-0 h-full w-full transition-transform duration-1000 ease-linear"
 		/>
 	</div>
 	<input bind:value type="range" {min} {max} {disabled} class="hidden" />
