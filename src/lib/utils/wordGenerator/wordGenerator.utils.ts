@@ -172,9 +172,10 @@ function seedStringToArray(seed: string, type: SeedType) {
 		const values: string[] = str.match(/.{1,2}/g) || [];
 
 		return values.concat(lastTwoChars.split(''));
+	} else if (type === SeedType.STANDARD) {
+		return seed.split('');
 	} else {
-		const values: string[] = seed.match(/.{1,2}/g) || [];
-		return values;
+		return seed.match(/.{1,2}/g) || [];
 	}
 }
 
