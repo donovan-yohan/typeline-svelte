@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
 	darkMode: 'class',
 	content: [
@@ -57,9 +56,15 @@ module.exports = {
 					'100%': {
 						transform: 'translateY(-0.2em)'
 					}
-				}
-			}
+				},
+			},
+			spacing: {
+				// *** This project relies on DEFAULT TAILWIND SIZE CONFIGS ***
+			},
+			minWidth: {
+				'96': '24rem',
+			  }
 		}
 	},
-	plugins: [require('@skeletonlabs/skeleton/tailwind/theme.cjs'), require('@tailwindcss/forms')]
+	plugins: [require('@skeletonlabs/skeleton/tailwind/theme.cjs'), require('@tailwindcss/forms')],
 }

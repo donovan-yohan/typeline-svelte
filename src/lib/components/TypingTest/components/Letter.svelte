@@ -54,7 +54,7 @@
 		style="--letter: '{actualMemo}'"
 		class={cx({
 			'letter inline-block h-full overflow-hidden transition-all duration-200 ease-in-out': true,
-			'after:text-default after:absolute after:left-0 after:top-1/2 after:w-full after:text-center after:text-base after:opacity-0 after:transition-all after:ease-in': true,
+			'after:text-token after:absolute after:left-0 after:top-1/2 after:w-full after:text-center after:text-base after:opacity-0 after:transition-all after:ease-in': true,
 			'opacity-60': !actual && !passed,
 			'': actual && letter === actual && !wordPerfect,
 			'animate-springWiggle text-error-500': actual && letter !== actual,

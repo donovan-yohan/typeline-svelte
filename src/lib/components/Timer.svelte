@@ -2,7 +2,7 @@
 	import { isFinished, isRunning } from '$lib/stores/TypingTest.store';
 	import { formatTime } from '$lib/utils/time.util';
 	import cx from 'classnames';
-	import Range from './Range.svelte';
+	import Range from './common/Range.svelte';
 
 	let time = 15;
 
@@ -22,5 +22,5 @@
 
 <div class={cx({ [$$props.class]: true, 'flex items-center gap-2': true })}>
 	<Range class={'w-full'} value={time} />
-	<span class="text-default font-bold">{formatTime(time)}</span>
+	<span class="text-token font-bold">{formatTime(time)}</span>
 </div>

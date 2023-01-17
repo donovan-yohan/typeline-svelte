@@ -16,10 +16,6 @@
 		}
 	}
 
-	.text-default {
-		--tw-text-opacity: 1;
-		color: rgb(var(--theme-font-color-base) / var(--tw-text-opacity));
-	}
 	.bg-default {
 		background-color: rgb(var(--theme-font-color-base));
 	}
@@ -30,10 +26,6 @@
 		background-color: rgb(var(--theme-font-color-base) / 0.6);
 	}
 	@media (prefers-color-scheme: dark) {
-		.text-default {
-			--tw-text-opacity: 1;
-			color: rgb(var(--theme-font-color-dark) / var(--tw-text-opacity));
-		}
 		.bg-default {
 			background-color: rgb(var(--theme-font-color-dark));
 		}
