@@ -66,5 +66,5 @@ module.exports = {
 			  }
 		}
 	},
-	plugins: [require('@skeletonlabs/skeleton/tailwind/theme.cjs'), require('@tailwindcss/forms')],
+	plugins: [require('@skeletonlabs/skeleton/tailwind/theme.cjs')],
 }
